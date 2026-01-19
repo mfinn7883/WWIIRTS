@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://dxsq26v7nkqwo"]
 
 [ext_resource type="Texture2D" uid="uid://cphfta5kk8v1p" path="res://Map/SoldierMap/UnitTiles.png" id="1_hw324"]
-[ext_resource type="Script" path="res://Map/SoldierMap/unit_map.gd" id="2_h150r"]
+[ext_resource type="Script" uid="uid://cww0tqiqjsscj" path="res://Map/SoldierMap/unit_map.gd" id="2_h150r"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ho8em"]
 texture = ExtResource("1_hw324")
