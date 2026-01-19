@@ -1,15 +1,35 @@
 extends TileMapLayer
-# These should match the names in your Scene Tree
 @onready var terrain_map: TileMapLayer = $"../TerrainLayer"
-@onready var unit_map: TileMapLayer = self
+
+var routes: Array[Array] = []
+var accumulator: float = 0.0
 
 func _ready():
-	# We wait a tiny bit to make sure the terrain is finished generating
 	await get_tree().process_frame 
 	spawn_soldiers()
-# Settings for your map	var map_width = 128
+
+
+func _process(delta: float) -> void:
+	accumulator += delta
+	# How long in between unit "hops"
+	if (accumulator < 1.0): 
+		return
+	accumulator = 0.0
+	
+	for route: Array in routes:
+		if (route.size() >= 2):
+			var unit = get_cell_atlas_coords(route[0])
+			set_cell(route[1], 0, unit)
+			erase_cell(route[0])
+			route.pop_front()
+	
+	for routeInd in routes.size():
+		var route = routes[routeInd]
+		if (route.size() < 2):
+			routes.remove_at(routeInd)
+
 var map_height = 128
-var water_coords = Vector2i(6, 0) # Your specific water tile	var soldier_coords = Vector2i(0, 0) # CHANGE THIS to your soldier's atlas position
+var water_coords = Vector2i(6, 0)
 
 func spawn_soldiers():
 	# Define the Groups
@@ -31,18 +51,18 @@ func spawn_soldiers():
 		# Find a center point where the WHOLE clump fits
 		var safe_center = find_clump_land(preferred_center)
 		
-		# 3. Place the Leader
-		unit_map.set_cell(safe_center, 0, group["leader"])
+		# Place the Leader
+		set_cell(safe_center, 0, group["leader"])
 		
-		# 4. Place the 4 Units around that safe center
+		# Place the 4 Units around that safe center
 		var offsets = [Vector2i(-1, 0), Vector2i(1, 0), Vector2i(0, -1), Vector2i(0, 1)]
 		
 		for j in range(group["units"].size()):
 			var unit_tile = group["units"][j]
 			var unit_pos = safe_center + offsets[j]
-			unit_map.set_cell(unit_pos, 0, unit_tile)
+			set_cell(unit_pos, 0, unit_tile)
 
-# New helper: Searches for a spot where a 3x3 area is mostly dry
+
 func find_clump_land(start_pos: Vector2i) -> Vector2i:
 	var max_search_radius = 20 
 	
@@ -73,8 +93,8 @@ func is_area_dry(center: Vector2i) -> bool:
 		if terrain_map.get_cell_atlas_coords(p) == Vector2i(6, 0):
 			return false
 	return true
-# --- Variables for Selection ---
-var selected_tile_pos: Vector2i = Vector2i(-1, -1) # -1 means nothing is selected
+
+var selected_tile_pos = Vector2i(0, 0)
 
 func _input(event):
 	# Only proceed if it's a mouse click (and not just moving the mouse)
@@ -82,11 +102,11 @@ func _input(event):
 		return
 
 	# Convert the mouse click position to a grid coordinate (e.g., 64, 110)
-	var mouse_grid_pos = unit_map.local_to_map(get_local_mouse_position())
-
+	var mouse_grid_pos = local_to_map(get_local_mouse_position())
+	
 	# LEFT CLICK: Select a Unit
 	if event.button_index == MOUSE_BUTTON_LEFT:
-		var source_id = unit_map.get_cell_source_id(mouse_grid_pos)
+		var source_id = get_cell_source_id(mouse_grid_pos)
 		
 		# If there is a tile here (source_id is not -1), select it
 		if source_id != -1:
@@ -102,7 +122,9 @@ func _input(event):
 		# Only move if we actually have a unit selected
 		if selected_tile_pos != Vector2i(-1, -1):
 			print("Moving unit from ", selected_tile_pos, " to ", mouse_grid_pos)
-			bfs_to_destination(selected_tile_pos, mouse_grid_pos)
+			var path = bfs_to_destination(selected_tile_pos, mouse_grid_pos)
+			print(path)
+			routes.push_back(path)
 
 func bfs_to_destination(start: Vector2i, destination: Vector2i) -> Array[Vector2i]:
 	var current: Vector2i
@@ -117,21 +139,21 @@ func bfs_to_destination(start: Vector2i, destination: Vector2i) -> Array[Vector2
 		if current == destination:
 			found = true
 			break
-			for tile: Vector2i in get_surrounding_cells(current):
-				var terrain_mult: int = 1
-				var temp_dist: float =  map_to_local(current).distance_to(map_to_local(tile))
-				var current_dist: float = visited[current] + (temp_dist / terrain_mult)
-				if is_tile_traversable(tile) and !visited.has(tile):
-					queue.insert_element(tile, current_dist)
-					visited[tile] = current_dist
-					tile_to_prev[tile] = current
+		for tile: Vector2i in get_surrounding_cells(current):
+			var terrain_mult: int = 1
+			var temp_dist: float =  map_to_local(current).distance_to(map_to_local(tile))
+			var current_dist: float = visited[current] + (temp_dist / terrain_mult)
+			if is_tile_traversable(tile) and !visited.has(tile):
+				queue.insert_element(tile, current_dist)
+				visited[tile] = current_dist
+				tile_to_prev[tile] = current
 	if found:
 		return create_route_from_tile_to_prev(start, destination, tile_to_prev)
 	else:
 		return []
 
 func is_tile_traversable(tile: Vector2i) -> bool:
-	return tile != Vector2i(0, 6)
+	return terrain_map.get_cell_atlas_coords(tile) != Vector2i(6, 0)
 
 func create_route_from_tile_to_prev(start: Vector2i, destination: Vector2i, tile_to_prev: Dictionary) -> Array[Vector2i]:
 	var current: Vector2i = destination
@@ -139,4 +161,5 @@ func create_route_from_tile_to_prev(start: Vector2i, destination: Vector2i, tile
 	while current != start:
 		route.push_front(current)
 		current = tile_to_prev[current]
+	route.push_front(start)
 	return route

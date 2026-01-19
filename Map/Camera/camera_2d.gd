@@ -15,9 +15,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		# 2. Optional: Zoom with Mouse Wheel
 		if event.is_pressed():
 			if event.button_index == MOUSE_BUTTON_WHEEL_UP:
-				zoom_camera(-zoom_speed)
-			if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 				zoom_camera(zoom_speed)
+			if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+				zoom_camera(-zoom_speed)
 
 	# 3. Handle Panning Motion
 	if event is InputEventMouseMotion and is_panning:
