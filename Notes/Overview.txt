@@ -1,0 +1,95 @@
+Map
+	Units(Enemy and Friendly)
+		Division(D4)
+			Division Commander(1)
+				Manuever Elemnts(3 Regiments)
+					Sum of lower level stats
+		Regiments(3)(R3)
+			Regiment Commanders(3)
+				Manuever Elements(4 Brigades)
+					Sum of lower level stats
+		Brigades(4)(B2)
+			Brigade Commanders(4)
+				Manuever Elemnts(5 Companies)
+					Sum of lower level stats
+		Companies(5)(C1)
+			Company Commanders(5)
+				Manuever Elements (4 Squads)
+					Sum of lower level stats
+		Squads(4)(S0)
+			Squad Leaders(4)
+				Combat Stats
+					Morale
+					Entrenchment
+					Armour
+					Firepower(Base Attack)
+					Suppresive Power(Aility to slow enemy movements)
+					Piercing(Ability to damage armoured units)
+					Supply
+						Rations
+						Ammo
+						Weapons
+				Personality Traits
+				Experience
+					Recon
+					Attack
+					Defence
+				Logistic Needs
+	
+	HQ's
+		1 HQ per manuever element excluding squads
+	Terrain
+		Plains
+			Grassland
+			Sand
+			Farmland
+		Wetland
+			Marsh
+				Shallow Marsh
+				Deep Marsh
+			Swamp
+				Shallow Swamp
+				Deep Swamp
+		Trees
+			Forest
+				Thin Forest
+				Thick Forest
+			Jungle
+				Thin Jungle 
+				Thick Jungle
+		Water
+			Stream
+			River
+			Lakes
+		Roads
+			Track/Path
+			Dirt Road
+			Gravel Road
+			Paved Road
+		Bridges
+			Small Bridge
+			Large Bridge
+		Elevation
+			A number assigned to a tile, combat over tiles is effected by each units elevation
+	Weather
+		Rain
+			Slows Movement
+			Reduces Morale
+		Fog
+			Reduces visibility
+		Extreme Cold
+			Reduces Morale
+			Increases Ration Consumption
+				Risk of casualties when under supplied
+		Extreme Heat
+			Reduces Morale
+			Increases Ration Consumption
+				Risk of casualties when under supplied
+	Player
+		Moveable icon
+			Only moveable between HQ's
+	Map Overlay
+		Fog of War
+		Last known positions of Enemy and Friendly Units
+		Weather Effects
+		Player Markings
