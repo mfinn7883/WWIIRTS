@@ -1,6 +1,6 @@
 extends TileMapLayer
 @onready var terrain_map: TileMapLayer = $"../TerrainLayer"
-
+@onready var unit_map: TileMapLayer = self
 var routes: Array[Array] = []
 var accumulator: float = 0.0
 
@@ -17,10 +17,38 @@ func _process(delta: float) -> void:
 	accumulator = 0.0
 	
 	for route: Array in routes:
+		# We check for >= 2 because we need a 'current' and a 'next'
 		if (route.size() >= 2):
-			var unit = get_cell_atlas_coords(route[0])
-			set_cell(route[1], 0, unit)
-			erase_cell(route[0])
+			# 1. Identify where we are (0) and where we want to go (1)
+			var current_pos = route[0]
+			var next_step = route[1]
+			
+			# 2. Get the Data
+			var my_data = UnitManager.get_unit_at_pos(current_pos)
+			var target_data = UnitManager.get_unit_at_pos(next_step)
+			
+			# 3. COMBAT CHECK (Before moving!)
+			if target_data != null and my_data != null:
+				if target_data.atlas_coords != my_data.atlas_coords:
+					print("Combat triggered at: ", next_step)
+					var enemy_died = CombatResolver.resolve_combat(my_data, target_data)
+					
+					if enemy_died:
+						erase_cell(next_step) # Clear the dead enemy
+					else:
+						route.clear() # Stop moving if enemy survived
+						continue 
+
+			# 4. ACTUAL MOVEMENT
+			var unit_atlas = get_cell_atlas_coords(current_pos)
+			set_cell(next_step, 0, unit_atlas)
+			erase_cell(current_pos)
+			
+			# 5. UPDATE DATA
+			if my_data:
+				my_data.grid_pos = next_step
+			
+			# 6. NOW we remove the old step so we can move to the next one in the next tick
 			route.pop_front()
 	
 	for routeInd in routes.size():
@@ -39,29 +67,31 @@ func spawn_soldiers():
 	
 	var all_groups = [group_blue, group_red, group_green]
 	
-	# Initial starting area (Middle Bottom)
 	var start_x = 40 
 	var spawn_y = 115
-	var gap = 12 # Increased gap slightly to prevent overlapping searches
+	var gap = 12
 
 	for i in range(all_groups.size()):
 		var group = all_groups[i]
 		var preferred_center = Vector2i(start_x + (i * gap), spawn_y)
 		
-		# Find a center point where the WHOLE clump fits
 		var safe_center = find_clump_land(preferred_center)
 		
-		# Place the Leader
-		set_cell(safe_center, 0, group["leader"])
+		# --- 1. Place the Leader ---
+		unit_map.set_cell(safe_center, 0, group["leader"])
+		# CREATE DATA FOR LEADER
+		UnitManager.create_unit("Leader", safe_center, group["leader"])
 		
-		# Place the 4 Units around that safe center
+		# --- 2. Place the 4 Units ---
 		var offsets = [Vector2i(-1, 0), Vector2i(1, 0), Vector2i(0, -1), Vector2i(0, 1)]
 		
 		for j in range(group["units"].size()):
 			var unit_tile = group["units"][j]
-			var unit_pos = safe_center + offsets[j]
-			set_cell(unit_pos, 0, unit_tile)
-
+			var unit_pos = safe_center + offsets[j] # This is where 'unit_pos' is defined
+			
+			unit_map.set_cell(unit_pos, 0, unit_tile)
+			# CREATE DATA FOR UNIT
+			UnitManager.create_unit("Soldier", unit_pos, unit_tile)
 
 func find_clump_land(start_pos: Vector2i) -> Vector2i:
 	var max_search_radius = 20 
@@ -153,7 +183,7 @@ func bfs_to_destination(start: Vector2i, destination: Vector2i) -> Array[Vector2
 		return []
 
 func is_tile_traversable(tile: Vector2i) -> bool:
-	return terrain_map.get_cell_atlas_coords(tile) != Vector2i(6, 0)
+	return terrain_map.get_cell_atlas_coords(tile) != Vector2i(6, 0) and get_cell_atlas_coords(tile) == Vector2i(-1,-1)
 
 func create_route_from_tile_to_prev(start: Vector2i, destination: Vector2i, tile_to_prev: Dictionary) -> Array[Vector2i]:
 	var current: Vector2i = destination
