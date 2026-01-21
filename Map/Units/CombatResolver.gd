@@ -2,7 +2,7 @@ extends Node
 var active_units: Dictionary = {}
 
 func resolve_combat(attacker: UnitData, defender: UnitData):
-	print("COMBAT: ", attacker.unit_name, " vs ", defender.unit_name)
+	print("Attacker: ", attacker.unit_name, ", ID: ", attacker.unit_id, " vs Defender: ", defender.unit_name, ", ID: ", defender.unit_id)
 	
 	# Simple math: Damage = Attack Power * Morale
 	var damage_to_defender = attacker.attack_power * attacker.morale
@@ -11,8 +11,8 @@ func resolve_combat(attacker: UnitData, defender: UnitData):
 	defender.strength -= damage_to_defender
 	attacker.strength -= damage_to_attacker
 	
-	print(defender.unit_name, " HP: ", defender.strength)
-	print(attacker.unit_name, " HP: ", attacker.strength)
+	print("Defender: ", defender.unit_name, " HP: ", defender.strength)
+	print("Attacker: ", attacker.unit_name, " HP: ", attacker.strength)
 
 	# Check for deaths
 	if defender.strength <= 0:

@@ -1,7 +1,6 @@
 extends TileMapLayer
 @onready var terrain_map: TileMapLayer = $"../TerrainLayer"
 @onready var unit_map: TileMapLayer = self
-var routes: Array[Array] = []
 var accumulator: float = 0.0
 
 func _ready():
@@ -16,45 +15,35 @@ func _process(delta: float) -> void:
 		return
 	accumulator = 0.0
 	
-	for route: Array in routes:
-		# We check for >= 2 because we need a 'current' and a 'next'
-		if (route.size() >= 2):
-			# 1. Identify where we are (0) and where we want to go (1)
-			var current_pos = route[0]
-			var next_step = route[1]
+	for unit: UnitData in UnitManager.get_units():
+		
+		if (unit.has_route()):
+			var next_step = unit.get_next_step()
 			
-			# 2. Get the Data
-			var my_data = UnitManager.get_unit_at_pos(current_pos)
+			
 			var target_data = UnitManager.get_unit_at_pos(next_step)
 			
-			# 3. COMBAT CHECK (Before moving!)
-			if target_data != null and my_data != null:
-				if target_data.atlas_coords != my_data.atlas_coords:
+			# COMBAT CHECK (Before moving!)
+			if target_data != null:
+				if target_data.atlas_coords != unit.atlas_coords:
 					print("Combat triggered at: ", next_step)
-					var enemy_died = CombatResolver.resolve_combat(my_data, target_data)
+					var enemy_died = CombatResolver.resolve_combat(unit, target_data)
 					
 					if enemy_died:
 						erase_cell(next_step) # Clear the dead enemy
 					else:
-						route.clear() # Stop moving if enemy survived
+						unit.erase_route() # Stop moving if enemy survived
 						continue 
-
-			# 4. ACTUAL MOVEMENT
-			var unit_atlas = get_cell_atlas_coords(current_pos)
+			
+			var unit_atlas = get_cell_atlas_coords(unit.grid_pos)
 			set_cell(next_step, 0, unit_atlas)
-			erase_cell(current_pos)
+			erase_cell(unit.grid_pos)
 			
 			# 5. UPDATE DATA
-			if my_data:
-				my_data.grid_pos = next_step
+			unit.grid_pos = next_step
 			
-			# 6. NOW we remove the old step so we can move to the next one in the next tick
-			route.pop_front()
-	
-	for routeInd in routes.size():
-		var route = routes[routeInd]
-		if (route.size() < 2):
-			routes.remove_at(routeInd)
+			unit.pop_step()
+		
 
 var map_height = 128
 var water_coords = Vector2i(6, 0)
@@ -124,7 +113,7 @@ func is_area_dry(center: Vector2i) -> bool:
 			return false
 	return true
 
-var selected_tile_pos = Vector2i(0, 0)
+var selected_unit_id: int = -1
 
 func _input(event):
 	# Only proceed if it's a mouse click (and not just moving the mouse)
@@ -140,21 +129,22 @@ func _input(event):
 		
 		# If there is a tile here (source_id is not -1), select it
 		if source_id != -1:
-			selected_tile_pos = mouse_grid_pos
-			print("Selected unit at: ", selected_tile_pos)
+			selected_unit_id = UnitManager.get_unit_at_pos(mouse_grid_pos).unit_id
+			print("Selected unit with id: ", selected_unit_id)
 		else:
 			# If you click empty ground, clear the selection
-			selected_tile_pos = Vector2i(-1, -1)
+			selected_unit_id = -1
 			print("Deselected.")
 
 	# RIGHT CLICK: Move the Selected Unit
 	elif event.button_index == MOUSE_BUTTON_RIGHT:
 		# Only move if we actually have a unit selected
-		if selected_tile_pos != Vector2i(-1, -1):
-			print("Moving unit from ", selected_tile_pos, " to ", mouse_grid_pos)
-			var path = bfs_to_destination(selected_tile_pos, mouse_grid_pos)
+		if selected_unit_id != -1:
+			print("Moving unit with id: ", selected_unit_id, " to ", mouse_grid_pos)
+			var unit: UnitData = UnitManager.get_unit_with_id(selected_unit_id)
+			var path = bfs_to_destination(unit.grid_pos, mouse_grid_pos)
 			print(path)
-			routes.push_back(path)
+			unit.set_route(path)
 
 func bfs_to_destination(start: Vector2i, destination: Vector2i) -> Array[Vector2i]:
 	var current: Vector2i
@@ -164,7 +154,13 @@ func bfs_to_destination(start: Vector2i, destination: Vector2i) -> Array[Vector2
 	var found: bool = false
 	queue.insert_element(start, 0)
 	visited[start] = 0
+	const MAX_TRIES = 10000
+	var tries = 0
 	while !queue.is_empty():
+		tries += 1
+		if (tries >= MAX_TRIES):
+			break
+		
 		current = queue.pop_back()
 		if current == destination:
 			found = true
@@ -183,7 +179,7 @@ func bfs_to_destination(start: Vector2i, destination: Vector2i) -> Array[Vector2
 		return []
 
 func is_tile_traversable(tile: Vector2i) -> bool:
-	return terrain_map.get_cell_atlas_coords(tile) != Vector2i(6, 0) and get_cell_atlas_coords(tile) == Vector2i(-1,-1)
+	return terrain_map.get_cell_atlas_coords(tile) != Vector2i(6, 0)
 
 func create_route_from_tile_to_prev(start: Vector2i, destination: Vector2i, tile_to_prev: Dictionary) -> Array[Vector2i]:
 	var current: Vector2i = destination
@@ -191,5 +187,4 @@ func create_route_from_tile_to_prev(start: Vector2i, destination: Vector2i, tile
 	while current != start:
 		route.push_front(current)
 		current = tile_to_prev[current]
-	route.push_front(start)
 	return route

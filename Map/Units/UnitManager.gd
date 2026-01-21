@@ -2,8 +2,11 @@ extends Node
 
 # This dictionary will store every unit. 
 # The Key will be the Unit ID, the Value will be the UnitData object.
-var active_units: Dictionary = {}
+var active_units: Dictionary[int, UnitData] = {}
 var next_id: int = 0
+
+func get_units() -> Array[UnitData]:
+	return (active_units.values() as Array[UnitData])
 
 # Function to create a unit and track it
 func create_unit(type: String, spawn_pos: Vector2i, atlas: Vector2i) -> UnitData:
@@ -27,4 +30,6 @@ func get_unit_at_pos(pos: Vector2i) -> UnitData:
 		if unit.grid_pos == pos:
 			return unit
 	return null
-# UnitManager.gd
+
+func get_unit_with_id(unit_id: int) -> UnitData:
+	return active_units[unit_id]

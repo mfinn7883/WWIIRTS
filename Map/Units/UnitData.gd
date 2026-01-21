@@ -18,3 +18,22 @@ class_name UnitData
 # Logistics
 @export var supplies: float = 50.0
 @export var officer_id: int = -1      # -1 means no officer assigned
+
+# Route
+var route: Array = []
+
+func set_route(new_route: Array):
+	route = new_route
+
+func has_route() -> bool:
+	return !route.is_empty()
+
+func get_next_step() -> Vector2i:
+	return route[0]
+
+func pop_step():
+	if (!route.is_empty()): 
+		route.pop_front()
+
+func erase_route():
+	route.clear()
