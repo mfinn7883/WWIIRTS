@@ -3,21 +3,14 @@ extends Node
 var active_units: Dictionary[int, UnitData] = {}
 var tick_count = 0
 
-func run_tick():
-	var player_units = []
-	for unit in active_units.values():
-		if unit.atlas_coords.y == 1: # Assuming Blue (y=1) is the player team
-			player_units.append(unit)
-	
-	FogManager.update_fog(player_units)
-
+var rifle_squad: Script = load("res://Map/MapObjects/Units/Actual_Units/rifle_squad.gd")
 
 func get_units() -> Array[UnitData]:
 	return (active_units.values() as Array[UnitData])
 
 # Function to create a unit and track it
 func create_unit(type: String, spawn_pos: Vector2i, atlas: Vector2i) -> UnitData:
-	var new_unit = UnitData.new(atlas)
+	var new_unit = rifle_squad.new(atlas)
 	
 	new_unit.unit_name = type
 	new_unit.grid_pos = spawn_pos

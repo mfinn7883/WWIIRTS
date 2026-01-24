@@ -5,7 +5,7 @@ Combat is efefcted by modifiers such as a units stats, which is what simulates "
 	But over time if the intital"Attacker/instiogator" just sits in the same tile while in Combat, they will also gain those stats
 
 Combat is not an automatiic assumption if two units see eachother
-Combat only begins if the logic of teh unit says to start firing at that enemy, or the player manually tells the unit to fire on the enemy/assumed position of enemy
+Combat only begins if the logic of the unit says to start firing at that enemy, or the player manually tells the unit to fire on the enemy/assumed position of enemy
 
 
 
