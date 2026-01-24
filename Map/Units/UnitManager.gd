@@ -1,5 +1,16 @@
 extends Node
 
+func run_tick():
+	# ... your existing logic for morale/supplies ...
+	
+	# After updating units, recalculate the fog
+	# We pass only the player-controlled units to FogManager
+	var player_units = []
+	for unit in active_units.values():
+		if unit.atlas_coords.y == 1: # Assuming Blue (y=1) is the player team
+			player_units.append(unit)
+	
+	FogManager.update_fog(player_units)
 # This dictionary will store every unit. 
 # The Key will be the Unit ID, the Value will be the UnitData object.
 var active_units: Dictionary[int, UnitData] = {}
@@ -7,7 +18,6 @@ var next_id: int = 0
 
 func get_units() -> Array[UnitData]:
 	return (active_units.values() as Array[UnitData])
-
 # Function to create a unit and track it
 func create_unit(type: String, spawn_pos: Vector2i, atlas: Vector2i) -> UnitData:
 	var new_unit = UnitData.new()
@@ -33,3 +43,6 @@ func get_unit_at_pos(pos: Vector2i) -> UnitData:
 
 func get_unit_with_id(unit_id: int) -> UnitData:
 	return active_units[unit_id]
+
+
+var tick_count = 0

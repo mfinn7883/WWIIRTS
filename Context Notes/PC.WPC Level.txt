@@ -1,0 +1,89 @@
+Platoon and Weapons Platoon
+
+
+Platoon
+	4 Squads of 12 men at full strength
+		Each Squad(Full Strength=FS)
+		Each Squad Takes up 1 Hex(25 meters across)
+		No 2 squads can occupy the same hex
+		1 squad can never occupy 2 hexs
+		
+		10 Rifles
+			General Attack and Defence 
+			Need Ammo
+		1 LMG(2 man team)
+			Provide Suppresion 
+				Allows for "Pinning" Enemy
+				Modifies Enemies Stats while in combat
+				Takes a brief amount of time to set up depeding upon unit state(Moving,Not Moving etc)
+				Need Same Ammo as Rifles
+	Squads Needs
+		Rations
+		Ammo(All the same type)
+
+
+
+Weapons PLatoon
+	4 Squads of 12 men at full strength
+	2 Rifle Squads
+		Each Squad(FS)
+		Each Squad Takes up 1 Hex(25 meters across)
+		No 2 squads can occupy the same hex
+		1 squad can never occupy 2 hexs
+		
+		10 Rifles
+			General Attack and Defence 
+			Need Ammo
+		1 LMG(2 man team)
+			Provide Suppresion 
+				Allows for "Pinning" Enemy
+				Modifies Enemies Stats while in combat
+				Takes a brief amount of time to set up depeding upon unit state(Moving,Not Moving etc)
+				Need Same Ammo as Rifles
+	Squads Needs
+		Rations
+		Ammo(All the same type)
+		
+	2 Weapons Squad
+		Each Squad(FS)
+		Each Squad Takes up 1 Hex(25 meters across)
+		No 2 squads can occupy the same hex
+		1 squad can never occupy 2 hexs
+		
+		4 Rifles
+			General Attack and Defence 
+			Need Ammo
+		8 Crew(Depending On weapon Systems)
+	Squads Needs
+		Rations
+		Ammo
+		Specialized Ammo(On some Weapon systems)
+	
+	
+Differnt Weapons Systems for Weapons Squad (Star Indicates They Require Specilized Ammo)
+	Sniper Teams
+		Increaased Vision While not Moving or in Recon State
+		Can inflict Enemy Casualties Without Prompting Return Fire
+		Lower Firepower In Normal Combat
+		Movement Speed Between Mortar Squad and Rifle Squad
+	Mortars*
+		Can Suppress 2 Squads at Once
+		Provide suppression over long range at Average Accuracy
+		Slow Moving
+		Long Prep Time
+	Artillery*
+		Provide Heavy Suppression over longer range at Poor accuracy
+		Can Suppress entire Platoon
+		Very Slow Moving
+		Very Long Prep Time
+	Demo Squad*
+		Can destroy Roads/Bridges 
+		Disrupt enemy supply
+		Otherwise Act as Normal Rifle Squad
+	Heavy Machine guns
+		Provide Suppression over Medium Range
+		Increase Combat Damage
+		Much Higher Suppression than Rifle Squad
+		Can Only Suppress 1 enemy Squad at a time
+		Slower Movement
+		Long Prep Time

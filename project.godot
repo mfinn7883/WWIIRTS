@@ -12,13 +12,14 @@ config_version=5
 
 config/name="WWII RTS"
 run/main_scene="res://game.tscn"
-config/features=PackedStringArray("4.4", "Forward Plus")
+config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 UnitManager="*res://Map/Units/UnitManager.gd"
 CombatResolver="*res://Map/Units/CombatResolver.gd"
+FogManager="*res://Map/FogofWar/FogManager.gd"
 
 [display]
 

@@ -8,6 +8,8 @@ class_name UnitData
 
 # Position on the 128x128 grid
 @export var grid_pos: Vector2i
+#Tiles it can see
+@export var vision_range: int = 3 # How many tiles away this unit can see
 
 # Stats for Combat
 @export var strength: float = 100.0   # Current health/manpower
