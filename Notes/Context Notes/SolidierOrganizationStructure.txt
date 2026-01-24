@@ -1,0 +1,45 @@
+This text file contains the Organization for all different "Levels" of the game, and what they player commands,
+In this Folder are files specific to each Level
+
+
+First Level of gameplay "Platoon Commander" (2nd Lieutenant)
+	4 Rifle Squads
+	Each Squad is modeled to have this inside of it
+		10-12 solidiers
+		Each solidiers contributes stats, as every solidier dies/wounded stats go down accordingly
+		The player has 4 manuever elements, their 4 squads
+Second Level of Gameplay,(level 1.5) "Weapons Platoon Commander"(1st leutenant)
+	2 Rifle Squads
+		Same as above Rifle Squads
+	2 Weapons Squads
+		10-12 solidiers
+		different stats than rifle squad because of a specific heavy weapons
+			AT
+			Snipers
+			Mortars
+			Artillery
+			Heavy MG
+			Engineers(Maybe)
+Third Level of Gameplay, (level 2)"Company Commander"(Captain)
+	4 Platoons
+		3 Rifle Platoons
+			4 Rifle Squads
+		1 Weapons Platoon
+			2 Rifle Squads
+			2 Weapons Squads(Can not be of different type)
+Fourth Level of Gameplay, (Level 3)"Battalion Commander"(Lieutenant Colonel)
+	5 companies
+		4 Companies
+		1 Support Company
+Fifth Level of Gameplay, (level 4)"Regimental Commander"(Colonel)
+	3 Battalions
+Sixth Level of Gameplay, (Level 5)"Division Commander"(Major General)
+	2 Regiments
+	1 "Special Weapon"
+			Airwing
+				Small CAS Airwing
+				Small AS Airwing
+				Small Bomber Airwing
+			Engineers(Maybe)
+			Artillery
+			Armour

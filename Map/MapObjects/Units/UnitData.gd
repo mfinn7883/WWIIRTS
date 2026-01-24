@@ -1,5 +1,4 @@
-extends Resource
-class_name UnitData
+class_name UnitData extends Resource
 
 # Core Identity
 @export var unit_id: int

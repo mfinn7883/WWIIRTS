@@ -7,19 +7,16 @@ var is_panning: bool = false
 @export var max_zoom: float = 5.0
 
 func _unhandled_input(event: InputEvent) -> void:
-	# 1. Detect Right Mouse Button Press/Release
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT:
 			is_panning = event.pressed
 		
-		# 2. Optional: Zoom with Mouse Wheel
 		if event.is_pressed():
 			if event.button_index == MOUSE_BUTTON_WHEEL_UP:
 				zoom_camera(zoom_speed)
 			if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 				zoom_camera(-zoom_speed)
 
-	# 3. Handle Panning Motion
 	if event is InputEventMouseMotion and is_panning:
 		# We multiply by zoom so that panning feels consistent 
 		# regardless of how far zoomed in/out you are.
