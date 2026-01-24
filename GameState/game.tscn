@@ -1,13 +1,13 @@
 [gd_scene load_steps=4 format=3 uid="uid://dttctb1squdyl"]
 
-[ext_resource type="PackedScene" uid="uid://bxnr1036yak7t" path="res://Map/MapTiles/TerrainMap.tscn" id="1_5t02j"]
-[ext_resource type="PackedScene" uid="uid://gam1x5h4hj8j" path="res://UI/Camera/camera_2d.tscn" id="2_wapcy"]
-[ext_resource type="PackedScene" uid="uid://dxsq26v7nkqwo" path="res://Map/SoldierMap/unit_map.tscn" id="3_abad2"]
+[ext_resource type="PackedScene" uid="uid://bxnr1036yak7t" path="res://Map/TerrainMap/TerrainMap.tscn" id="1_tlbkr"]
+[ext_resource type="PackedScene" uid="uid://gam1x5h4hj8j" path="res://UI/Camera/camera_2d.tscn" id="2_0co7p"]
+[ext_resource type="PackedScene" uid="uid://dxsq26v7nkqwo" path="res://Map/SoldierMap/unit_map.tscn" id="3_rbmyb"]
 
 [node name="Game" type="Node2D"]
 
-[node name="TerrainLayer" parent="." instance=ExtResource("1_5t02j")]
+[node name="TerrainLayer" parent="." instance=ExtResource("1_tlbkr")]
 
-[node name="Camera2D" parent="." instance=ExtResource("2_wapcy")]
+[node name="Camera2D" parent="." instance=ExtResource("2_0co7p")]
 
-[node name="UnitMap" parent="." instance=ExtResource("3_abad2")]
+[node name="UnitMap" parent="." instance=ExtResource("3_rbmyb")]

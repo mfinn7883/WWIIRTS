@@ -1,15 +1,22 @@
-extends TileMapLayer
+class_name TerrainMap extends TileMapLayer
 
 # --- Configuration ---
 @export var map_width: int = 128
 @export var map_height: int = 128
 @export var noise_seed: int = 5566789 # Change this for a new map
 
+static var singleton_instance: TerrainMap = null
+
+static func get_instance() -> TerrainMap:
+	assert(singleton_instance != null, "The TerrainMap has not been created yet")
+	return singleton_instance
 
 # --- Noise Parameters ---
 var noise = FastNoiseLite.new()
 
 func _ready() -> void:
+	assert(singleton_instance == null, "A terrain map has already been created, only 1 is allowed")
+	singleton_instance = self
 	generate_map()
 
 func generate_map() -> void:

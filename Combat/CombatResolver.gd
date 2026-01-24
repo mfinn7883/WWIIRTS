@@ -1,7 +1,6 @@
 extends Node
-var active_units: Dictionary = {}
 
-func resolve_combat(attacker: UnitData, defender: UnitData):
+func resolve_combat(attacker: UnitData, defender: UnitData) -> bool:
 	print("Attacker: ", attacker.unit_name, ", ID: ", attacker.unit_id, " vs Defender: ", defender.unit_name, ", ID: ", defender.unit_id)
 	
 	# Simple math: Damage = Attack Power * Morale
@@ -16,7 +15,5 @@ func resolve_combat(attacker: UnitData, defender: UnitData):
 
 	# Check for deaths
 	if defender.strength <= 0:
-		print(defender.unit_name, " was destroyed!")
-		active_units.erase(defender.unit_id)
 		return true # Defender died
 	return false # Defender survived

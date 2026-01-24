@@ -3,6 +3,8 @@ extends TileMapLayer
 @onready var unit_map: TileMapLayer = self
 var accumulator: float = 0.0
 
+var pathfinding = load("res://Map/TerrainMap/pathfinding.gd")
+
 func _ready():
 	await get_tree().process_frame 
 	spawn_soldiers()
@@ -39,7 +41,6 @@ func _process(delta: float) -> void:
 			set_cell(next_step, 0, unit_atlas)
 			erase_cell(unit.grid_pos)
 			
-			# 5. UPDATE DATA
 			unit.grid_pos = next_step
 			
 			unit.pop_step()
@@ -129,7 +130,7 @@ func _input(event):
 		
 		# If there is a tile here (source_id is not -1), select it
 		if source_id != -1:
-			selected_unit_id = UnitManager.get_unit_at_pos(mouse_grid_pos).unit_id
+			selected_unit_id = UnitManager.get_unit_at_pos(mouse_grid_pos).get_id()
 			print("Selected unit with id: ", selected_unit_id)
 		else:
 			# If you click empty ground, clear the selection
@@ -142,49 +143,6 @@ func _input(event):
 		if selected_unit_id != -1:
 			print("Moving unit with id: ", selected_unit_id, " to ", mouse_grid_pos)
 			var unit: UnitData = UnitManager.get_unit_with_id(selected_unit_id)
-			var path = bfs_to_destination(unit.grid_pos, mouse_grid_pos)
+			var path = pathfinding.bfs_to_destination(unit.grid_pos, mouse_grid_pos)
 			print(path)
 			unit.set_route(path)
-
-func bfs_to_destination(start: Vector2i, destination: Vector2i) -> Array[Vector2i]:
-	var current: Vector2i
-	var queue: priority_queue = priority_queue.new()
-	var tile_to_prev: Dictionary = {}
-	var visited: Dictionary = {}
-	var found: bool = false
-	queue.insert_element(start, 0)
-	visited[start] = 0
-	const MAX_TRIES = 10000
-	var tries = 0
-	while !queue.is_empty():
-		tries += 1
-		if (tries >= MAX_TRIES):
-			break
-		
-		current = queue.pop_back()
-		if current == destination:
-			found = true
-			break
-		for tile: Vector2i in get_surrounding_cells(current):
-			var terrain_mult: int = 1
-			var temp_dist: float =  map_to_local(current).distance_to(map_to_local(tile))
-			var current_dist: float = visited[current] + (temp_dist / terrain_mult)
-			if is_tile_traversable(tile) and !visited.has(tile):
-				queue.insert_element(tile, current_dist)
-				visited[tile] = current_dist
-				tile_to_prev[tile] = current
-	if found:
-		return create_route_from_tile_to_prev(start, destination, tile_to_prev)
-	else:
-		return []
-
-func is_tile_traversable(tile: Vector2i) -> bool:
-	return terrain_map.get_cell_atlas_coords(tile) != Vector2i(6, 0)
-
-func create_route_from_tile_to_prev(start: Vector2i, destination: Vector2i, tile_to_prev: Dictionary) -> Array[Vector2i]:
-	var current: Vector2i = destination
-	var route: Array[Vector2i] = []
-	while current != start:
-		route.push_front(current)
-		current = tile_to_prev[current]
-	return route

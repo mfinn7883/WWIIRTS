@@ -8,7 +8,7 @@ var is_panning: bool = false
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_RIGHT:
+		if event.button_index == MOUSE_BUTTON_MIDDLE:
 			is_panning = event.pressed
 		
 		if event.is_pressed():
