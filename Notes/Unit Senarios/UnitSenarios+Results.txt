@@ -1,0 +1,66 @@
+Key Distinctions
+Combat is Combat, there is no "Attacker" or "Defender" in combat, it is just combat
+Combat is efefcted by modifiers such as a units stats, which is what simulates "Defence" and "Offence", 
+	ie. if a unit has been stationary and is therefor concealed and entrenched, they will be better at defence
+	But over time if the intital"Attacker/instiogator" just sits in the same tile while in Combat, they will also gain those stats
+
+Combat is not an automatiic assumption if two units see eachother
+Combat only begins if the logic of teh unit says to start firing at that enemy, or the player manually tells the unit to fire on the enemy/assumed position of enemy
+
+
+
+1. Enemy Pops into Line Of sight
+	Unit Records,"Theres an enemy of x strength over there!"
+	Unit Checks its engaging orders
+		Always Engage
+		Engage when of equal or less strength
+		Follow
+		Retreat
+	Do  whatever it decides
+
+
+2. 2 units are attacking eachother
+	Over time they do damage to eachother based off of "Firepower" stat
+		Firepower stat based off of the weapons, and the amount of "Manpower" manning that weapon systems
+	"Suppresive Power" pprovides modifierss to the enemy's stats
+		Firepower(Decreases)
+		Movement Speed(Decreases)
+		Morale(Decreases)
+	As time goes on any of these things could end the battle
+		Either Squad Runs out of Manpower
+		Either Squads "morale" Drops below Retreat Theshhold
+		Either Squads Commander orders them into a state of "retreat" or "Movement", in both states they are not abel to return fire
+			Unless they are in the state of "Fighting Withdrawl" in which case their suppressive fire continues, but their firepower stat becomes 0
+			Until the suppressive fire element"LMG,HMG" is out of range of the enemy
+
+
+3. One unit sees an enemy, who does not see them back, and engages
+	For THIS EXAMPLE "Attacker" will refer to the unit who initiated combat, and "Defender" the opposite'
+	
+	The attacker fires upon the enemy the same if it it were a recieving fore as outlined in senario 2
+	The defender gets an effect called"Stunned" which happens when they recieve fire from an enemy they cannot see
+	For the first X amoumt pof time in combat the defender recieves ire, without knowing the exact location they are reieving from.
+	As time goes by the area that they could be recieving fire from shrinks until it is the size of one tile, the tile they are reciieving fire from
+		This process can be shortened if the Commander instructs their squad to fire at a tile that happens to be the one they are recieving fire from, 
+		but while they are firing the area they could be recieving fire from shirnks slower
+	Once the tile is Known it switches to being combat from senario 2
+
+
+4. 2 enemy Squads are attacking a single allied squad
+	By defualt the combat stats(Firepower and suppresive power) are split evenly between the 2 enemies
+	The commander can manually assign all fire to one unit after combat has started
+
+
+5. 1 squad is in the "recon" state and encourters another squad.
+	Meaning that they see enemy that doesnt see them, unit logic says to attack, a short timer starts simulating the spread out unit reconvening, then combat starts
+	In the "recon" state the squad gains vision range at the cost of movement speed, and "Time to Combat"
+	
+	Once Combat starts they sqitch from the "Recon" state to the "Combat" state, meaning they lose the vision buff but regain the movement speed
+		If once combat starts they can no longer see the enemy, and are not reciving fire, the position of the enemy becomes completely unknown
+		If the enemy returns fire, it turns into senario 3, where the unit that was observed under recon would act as the "Attacker", and the unit that was in the "recon" state becomes the defenderr
+
+
+6. 2 units are in the "Recon" state, and see each other
+	the same thign happens as senario 5, except both units check their logic to decide what they do
+	If neither unit engages, the vision range decreases and the enemy becomes invisible
+	If both units engaged the "Time to Combat" timer decreases for both, and then they both act as the "Defender" in senario 5

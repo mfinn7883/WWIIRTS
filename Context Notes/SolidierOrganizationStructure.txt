@@ -3,11 +3,16 @@ In this Folder are files specific to each Level
 
 
 First Level of gameplay "Platoon Commander" (2nd Lieutenant)
-	4 Rifle Squads
+	3 Rifle Squads
 	Each Squad is modeled to have this inside of it
 		10-12 solidiers
 		Each solidiers contributes stats, as every solidier dies/wounded stats go down accordingly
 		The player has 4 manuever elements, their 4 squads
+	1 Weapons Squad
+		10-12 solidiers
+		different stats than rifle squad because of a specific heavy weapons
+			Snipers
+			Heavy MG
 Second Level of Gameplay,(level 1.5) "Weapons Platoon Commander"(1st leutenant)
 	2 Rifle Squads
 		Same as above Rifle Squads

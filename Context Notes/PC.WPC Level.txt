@@ -4,7 +4,7 @@ Platoon and Weapons Platoon
 Platoon
 	4 Squads of 12 men at full strength
 		Each Squad(Full Strength=FS)
-		Each Squad Takes up 1 Hex(25 meters across)
+		Each Squad Takes up 1 Hex ~14 meters across)
 		No 2 squads can occupy the same hex
 		1 squad can never occupy 2 hexs
 		
