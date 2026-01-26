@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://1pk2mlff8y50"
-path="res://.godot/imported/7SEYHd.png-4206cc088254b1856d658352fd9d9b80.ctex"
+uid="uid://gehj1jcqbw6d"
+path="res://.godot/imported/big_isometric.png-fd71e275aca7e42bec9906f385c12f3b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Resources/MapAtlasTextures/7SEYHd.png"
-dest_files=["res://.godot/imported/7SEYHd.png-4206cc088254b1856d658352fd9d9b80.ctex"]
+source_file="res://Resources/MapAtlasTextures/big_isometric.png"
+dest_files=["res://.godot/imported/big_isometric.png-fd71e275aca7e42bec9906f385c12f3b.ctex"]
 
 [params]
 

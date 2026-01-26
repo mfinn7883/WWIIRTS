@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=4 uid="uid://c0j1u06p7oe75"]
+
+[ext_resource type="Script" uid="uid://3m6qwp37bj5t" path="res://Testing/test_iso_metric.gd" id="1_css5d"]
+[ext_resource type="PackedScene" uid="uid://bxnr1036yak7t" path="res://Map/TerrainMap/TerrainMap.tscn" id="2_28wal"]
+[ext_resource type="PackedScene" uid="uid://gam1x5h4hj8j" path="res://UI/Camera/camera_2d.tscn" id="3_28wal"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_css5d")
+
+[node name="TerrainLayer" parent="." instance=ExtResource("2_28wal")]
+tile_map_data = PackedByteArray("AAAAAP7/AQAAAAAAAAABAP7/AQAAAAAAAAABAP//AQAAAAAAAAACAP//AQAAAAAAAAACAAAAAQAAAAAAAAABAAAAAQAAAAAAAAAAAAAAAQAAAAAAAAAAAP//AQAAAAAAAAD/////AQAAAAAAAAD+/wAAAQAAAAAAAAD//wAAAQAAAAAAAAAAAAEAAQAAAAAAAAABAAEAAQAAAAAAAAD+/wEAAQAAAAAAAAD//wEAAQAAAAAAAAD///7/AQAAAAAAAAD+////AQAAAAAAAAACAAEAAQAAAAAAAAAAAAIAAQAAAAAAAAA=")
+script = null
+
+[node name="TerrainLayer2" parent="." instance=ExtResource("2_28wal")]
+position = Vector2(1, -37)
+tile_map_data = PackedByteArray("AAABAP3/AQAAAAAAAAACAP7/AQAAAAAAAAADAP7/AQAAAAAAAAADAP//AQAAAAAAAAADAAAAAQAAAAAAAAADAAEAAQAAAAAAAAACAAIAAQAAAAAAAAABAAIAAQAAAAAAAAAAAAMAAQAAAAAAAAD//wIAAQAAAAAAAAD+/wIAAQAAAAAAAAD9/wEAAQAAAAAAAAD9/wAAAQAAAAAAAAD9////AQAAAAAAAAD9//7/AQAAAAAAAAD+//7/AQAAAAAAAAD///3/AQAAAAAAAAAAAP3/AQAAAAAAAAA=")
+script = null
+
+[node name="Camera2D" parent="." instance=ExtResource("3_28wal")]
