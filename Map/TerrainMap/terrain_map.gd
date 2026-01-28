@@ -6,7 +6,15 @@ class_name TerrainMap extends Node2D
 @export var noise_seed: int = 5566789 # Change this for a new map
 @export var max_height: int = 10
 
-var terrain_grid: Dictionary[Vector2i, Vector2i] = {}
+class TileInfo:
+	var atlas: Vector2i
+	var height: int
+	
+	func _init(p_atlas: Vector2i, p_height: int) -> void:
+		atlas = p_atlas
+		height = p_height
+		
+var terrain_grid: Dictionary[Vector2i, TileInfo] = {}
 var terrain_layers: Array[TileMapLayer] = []
 
 var tileset: TileSet = TileSet.new()
@@ -56,6 +64,10 @@ func _ready() -> void:
 	
 	generate_map()
 
+func get_layer(height: int) -> TileMapLayer:
+	if (height < max_height): return terrain_layers[height]
+	return null
+
 func generate_map() -> void:
 	# Higher value, bigger mountains
 	const MOUNTAINNESS = 1.3
@@ -81,6 +93,8 @@ func generate_map() -> void:
 			place_terrain(x, y, h_val)
 
 func place_terrain(x: int, y: int, h_val: float) -> void:
+	# TODO: MAKE SURE THAT HEIGHT IS abs(height - MAX(HEIGHT_OF_SURROUNDING_TILES)) <= 1
+	
 	# 0 - 10
 	var height: float = (h_val) * 5.0
 	
@@ -169,6 +183,29 @@ func place_terrain(x: int, y: int, h_val: float) -> void:
 		## Mountain/Height logic here
 		#set_cell(Vector2i(x,y), Vector2i(5,0), height)
 
+
+
 func set_cell(pos: Vector2i, atlas: Vector2i, height: int) -> void:
-	terrain_grid[pos] = atlas
+	terrain_grid[pos] = TileInfo.new(atlas, height)
 	terrain_layers[height].set_cell(pos, 0, atlas)
+
+func get_surrounding_cells(pos: Vector2i) -> Array[Vector2i]:
+	var toReturn: Array[Vector2i] = []
+	
+	for tile: Vector2i in get_layer(0).get_surrounding_cells(pos):
+		toReturn.push_back(tile)
+	
+	return toReturn
+
+func get_cell_atlas_coords(pos: Vector2i) -> Vector2i:
+	if (!terrain_grid.has(pos)): return Vector2i(-1, -1)
+	var height = terrain_grid[pos].height
+	return get_layer(height).get_cell_atlas_coords(pos)
+
+func map_to_local(pos: Vector2i) -> Vector2:
+	# Use bottom layer for no offsets
+	return get_layer(0).map_to_local(pos)
+
+func local_to_map(local_pos: Vector2) -> Vector2i:
+	# Use bottom layer for no offsets
+	return get_layer(0).local_to_map(local_pos)
