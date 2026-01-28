@@ -4,7 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://gam1x5h4hj8j" path="res://UI/Camera/camera_2d.tscn" id="3_28wal"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_css5d"]
-load_path = "res://.godot/imported/big_isometric.png-fd71e275aca7e42bec9906f385c12f3b.ctex"
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5dult"]
 texture = SubResource("CompressedTexture2D_css5d")

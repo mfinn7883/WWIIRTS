@@ -142,48 +142,9 @@ func place_terrain(x: int, y: int, h_val: float) -> void:
 	else:
 		# Mountain/Height logic here
 		set_cell(Vector2i(x,y), Vector2i(5,0), floor(height))
-	
-	
-	
-	#if val < -0.3:
-		## Water logic here
-		#set_cell(Vector2i(x,y), Vector2i(6,0), height)
-	#elif val < -0.26:
-		## Sand
-		#set_cell(Vector2i(x,y), Vector2i(0,3), height)
-	#elif val < -0.18:
-		##Marsh
-		#set_cell(Vector2i(x,y), Vector2i(7,1), height)
-	#elif val < -0.15:
-		#if randi_range(0,2) != 0:
-			#set_cell(Vector2i(x,y), Vector2i(0,0), height)
-		#else:
-			##Grass
-			#set_cell(Vector2i(x,y), Vector2i(4,0), height)
-	#elif val < 0.2:
-		##Jungle
-		#if randi_range(0,3) != 0:
-			#set_cell(Vector2i(x,y), Vector2i(0,4), height)
-		#else:
-			##Grass
-			#set_cell(Vector2i(x,y), Vector2i(0,0), height)
-	#elif val < 0.4:
-		#if randi_range(0,3) != 0:
-			#set_cell(Vector2i(x,y), Vector2i(2,0), height)
-		#else:
-			##Grass
-			#set_cell(Vector2i(x,y), Vector2i(0,4), height)
-	#elif val < 0.5:
-		##Forest Hill
-		#set_cell(Vector2i(x,y), Vector2i(4,0), height)
-	#elif val < 0.6:
-		##Hill
-		#set_cell(Vector2i(x,y), Vector2i(3,0), height)
-	#else:
-		## Mountain/Height logic here
-		#set_cell(Vector2i(x,y), Vector2i(5,0), height)
 
-
+func generate_roads() -> void:
+	pass
 
 func set_cell(pos: Vector2i, atlas: Vector2i, height: int) -> void:
 	terrain_grid[pos] = TileInfo.new(atlas, height)
@@ -201,6 +162,10 @@ func get_cell_atlas_coords(pos: Vector2i) -> Vector2i:
 	if (!terrain_grid.has(pos)): return Vector2i(-1, -1)
 	var height = terrain_grid[pos].height
 	return get_layer(height).get_cell_atlas_coords(pos)
+
+func get_height_of_cell(pos: Vector2i) -> int:
+	if (!terrain_grid.has(pos)): return -1
+	return terrain_grid[pos].height
 
 func map_to_local(pos: Vector2i) -> Vector2:
 	# Use bottom layer for no offsets

@@ -1,5 +1,7 @@
 extends Resource
 
+static var e: float = 2.71828
+
 static func bfs_to_destination(start: Vector2i, destination: Vector2i) -> Array[Vector2i]:
 	var terrain_map = TerrainMap.get_instance()
 	
@@ -49,3 +51,48 @@ static func create_route_from_tile_to_prev(start: Vector2i, destination: Vector2
 		route.push_front(current)
 		current = tile_to_prev[current]
 	return route
+
+func aStar(start: Vector2i, destination: Vector2i) -> Array[Vector2i]:
+	var terrain_map = TerrainMap.get_instance()
+	
+	# Can't reach dest
+	if (!is_tile_traversable(destination)):
+		return []
+	
+	var current: Vector2i
+	var queue: priority_queue = priority_queue.new()
+	var tile_to_prev: Dictionary = {}
+	var visited: Dictionary = {}
+	var found: bool = false
+	queue.insert_element(start, 0)
+	visited[start] = 0
+	const MAX_TRIES: int = 10000
+	var tries: int = 0
+	
+	var get_h_cost = func(pos: Vector2i) -> float:
+		return terrain_map.map_to_local(pos).distance_to(terrain_map.map_to_local(destination))
+	
+	var get_tile_cost = func(s_tile: Vector2i, e_tile: Vector2i) -> float:
+		var h1 = terrain_map.get_height_of_cell(s_tile)
+		var h2 = terrain_map.get_height_of_cell(e_tile)
+		
+		return pow(e, h2 - h1)
+	
+	while !queue.is_empty():
+		tries += 1
+		if (tries >= MAX_TRIES):
+			break
+		current = queue.pop_back()
+		if current == destination:
+			found = true
+			break
+		for tile: Vector2i in terrain_map.get_surrounding_cells(current):
+			var cost: float = visited[current] + get_tile_cost.call(current, tile) + get_h_cost.call(tile)
+			if is_tile_traversable(tile) and (!visited.has(tile) or visited[tile] > cost):
+				queue.insert_element(tile, cost)
+				visited[tile] = cost
+				tile_to_prev[tile] = current
+	if found:
+		return create_route_from_tile_to_prev(start, destination, tile_to_prev)
+	else:
+		return []
