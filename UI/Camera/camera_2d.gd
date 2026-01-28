@@ -3,7 +3,7 @@ extends Camera2D
 # --- Variables ---
 var is_panning: bool = false
 @export var zoom_speed: float = 0.1
-@export var min_zoom: float = 0.2
+@export var min_zoom: float = 0.1
 @export var max_zoom: float = 5.0
 
 func _unhandled_input(event: InputEvent) -> void:

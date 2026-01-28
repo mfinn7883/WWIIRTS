@@ -1,11 +1,13 @@
 [gd_scene load_steps=6 format=4 uid="uid://c0j1u06p7oe75"]
 
 [ext_resource type="Script" uid="uid://3m6qwp37bj5t" path="res://Testing/test_iso_metric.gd" id="1_css5d"]
-[ext_resource type="Texture2D" uid="uid://gehj1jcqbw6d" path="res://Resources/MapAtlasTextures/big_isometric.png" id="2_28wal"]
 [ext_resource type="PackedScene" uid="uid://gam1x5h4hj8j" path="res://UI/Camera/camera_2d.tscn" id="3_28wal"]
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_css5d"]
+load_path = "res://.godot/imported/big_isometric.png-fd71e275aca7e42bec9906f385c12f3b.ctex"
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5dult"]
-texture = ExtResource("2_28wal")
+texture = SubResource("CompressedTexture2D_css5d")
 margins = Vector2i(0, 34)
 texture_region_size = Vector2i(128, 192)
 0:0/0 = 0
