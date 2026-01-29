@@ -4,7 +4,6 @@ var terrain_map: TileMapLayer = null
 
 var map_height = 128
 var water_coords = Vector2i(6, 0)
-var pathfinding = load("res://Map/TerrainMap/pathfinding.gd")
 
 func _ready():
 	await get_tree().process_frame 
@@ -20,6 +19,7 @@ func _input(event):
 
 	# Convert the mouse click position to a grid coordinate (e.g., 64, 110)
 	var mouse_grid_pos = local_to_map(get_local_mouse_position())
+	var terrain_grid_pos = TerrainMap.get_instance().get_cell_hovered()
 	
 	# LEFT CLICK: Select a Unit
 	if event.button_index == MOUSE_BUTTON_LEFT:
@@ -38,9 +38,10 @@ func _input(event):
 	elif event.button_index == MOUSE_BUTTON_RIGHT:
 		# Only move if we actually have a unit selected
 		if selected_unit_id != -1:
-			print("Moving unit with id: ", selected_unit_id, " to ", mouse_grid_pos)
+			print("Moving unit with id: ", selected_unit_id, " to ", terrain_grid_pos)
 			var unit: UnitData = UnitManager.get_unit_with_id(selected_unit_id)
-			var path = pathfinding.bfs_to_destination(unit.grid_pos, mouse_grid_pos)
+			#var path = pathfinding.bfs_to_destination(unit.grid_pos, terrain_grid_pos)
+			var path = pathfinding.aStar(unit.grid_pos, terrain_grid_pos)
 			print(path)
 			unit.set_route(path)
 

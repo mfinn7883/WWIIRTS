@@ -1,11 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://dttctb1squdyl"]
+[gd_scene load_steps=6 format=3 uid="uid://dttctb1squdyl"]
 
 [ext_resource type="PackedScene" uid="uid://cv2lkk4atqev" path="res://Map/Tile_Effects/tile_effects.tscn" id="1_0co7p"]
+[ext_resource type="Script" uid="uid://cippsmeli60l5" path="res://GameState/game.gd" id="1_rbmyb"]
 [ext_resource type="PackedScene" uid="uid://bxnr1036yak7t" path="res://Map/TerrainMap/TerrainMap.tscn" id="1_tlbkr"]
 [ext_resource type="PackedScene" uid="uid://gam1x5h4hj8j" path="res://UI/Camera/camera_2d.tscn" id="2_0co7p"]
 [ext_resource type="PackedScene" uid="uid://dxsq26v7nkqwo" path="res://Map/SoldierMap/unit_map.tscn" id="3_rbmyb"]
 
 [node name="Game" type="Node2D"]
+script = ExtResource("1_rbmyb")
 
 [node name="TerrainLayer" parent="." instance=ExtResource("1_tlbkr")]
 

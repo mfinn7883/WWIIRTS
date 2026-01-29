@@ -16,7 +16,6 @@ func create_unit(type: String, spawn_pos: Vector2i, atlas: Vector2i) -> UnitData
 	new_unit.grid_pos = spawn_pos
 	new_unit.atlas_coords = atlas
 	
-	# Add it to our "Big Book" of units
 	active_units[new_unit.get_id()] = new_unit
 	
 	return new_unit
